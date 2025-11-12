@@ -49,8 +49,6 @@ To run this project, ensure that you have:
     - Add `AIProjectConnString` to your local settings or environment variables. This is crucial for connecting to Azure AI Projects. The AI Project connection string can be found in the Azure portal under your AI Project resource as the Azure AI Foundry project endpoint.
     - Authentication is handled via Entra ID, you will need to login and be sure that you have the right permissions. As a security best practice, we'll use keyless authentication to authenticate to Azure OpenAI with Microsoft Entra ID. Open a terminal and run az login --use-device-code to sign in to your Azure account.
 
-Once you've logged in, select your subscription in the terminal.
-
 4. Run the Azure Function locally:
 
     ```bash
