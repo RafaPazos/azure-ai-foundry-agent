@@ -115,25 +115,7 @@ def agent_httptrigger(req: func.HttpRequest) -> func.HttpResponse:
             status_code=500
         )
     
-@app.function_name(name="openapi_json")
-@app.route(route="/api/openapi.json", auth_level=func.AuthLevel.ANONYMOUS, methods=["GET"])
-def openapi_json(req: func.HttpRequest) -> func.HttpResponse:
-    return func.HttpResponse(
-            json.dumps(get_openapi_json()),
-            status_code=200,
-            mimetype="application/json"
-        )
-
-@app.function_name(name="openapi_yaml")
-@app.route(route="/api/openapi.yaml", auth_level=func.AuthLevel.ANONYMOUS, methods=["GET"])
-def openapi_yaml(req: func.HttpRequest) -> func.HttpResponse:
-    return func.HttpResponse(
-            json.dumps(get_openapi_yaml()),
-            status_code=200,
-            mimetype="application/x-yaml"
-        )
-
 @app.function_name(name="swagger_ui")
-@app.route(route="/api/docs", auth_level=func.AuthLevel.ANONYMOUS, methods=["GET"])
+@app.route(route="api/docs", auth_level=func.AuthLevel.ANONYMOUS, methods=["GET"])
 def swagger_ui(req: func.HttpRequest) -> func.HttpResponse:
     return render_swagger_ui()
