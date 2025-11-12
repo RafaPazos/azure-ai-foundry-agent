@@ -1,13 +1,26 @@
+import os
+import json
 import azure.functions as func
 import logging
 from azure.ai.projects import AIProjectClient
-import os
-import json
 from azure.identity import DefaultAzureCredential
+from azure_functions_openapi.decorator import openapi
+from azure_functions_openapi.openapi import get_openapi_json, get_openapi_yaml
+from azure_functions_openapi.swagger_ui import render_swagger_ui
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
-@app.route(route="agent_httptrigger")
+# Enable OpenAPI/Swagger
+@openapi(
+    summary="Greet user",
+    route="/agent_httptrigger",
+    request_model={"message": "string","agentid": "string","threadid": "string"},
+    response_model={"message": "string"},
+    tags=["agent"]
+)
+
+@app.function_name(name="agent_httptrigger")
+@app.route(route="agent_httptrigger", auth_level=func.AuthLevel.ANONYMOUS, methods=["POST"])
 def agent_httptrigger(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
@@ -101,3 +114,26 @@ def agent_httptrigger(req: func.HttpRequest) -> func.HttpResponse:
             "Internal Server Error: " + str(e),
             status_code=500
         )
+    
+@app.function_name(name="openapi_json")
+@app.route(route="/api/openapi.json", auth_level=func.AuthLevel.ANONYMOUS, methods=["GET"])
+def openapi_json(req: func.HttpRequest) -> func.HttpResponse:
+    return func.HttpResponse(
+            json.dumps(get_openapi_json()),
+            status_code=200,
+            mimetype="application/json"
+        )
+
+@app.function_name(name="openapi_yaml")
+@app.route(route="/api/openapi.yaml", auth_level=func.AuthLevel.ANONYMOUS, methods=["GET"])
+def openapi_yaml(req: func.HttpRequest) -> func.HttpResponse:
+    return func.HttpResponse(
+            json.dumps(get_openapi_yaml()),
+            status_code=200,
+            mimetype="application/x-yaml"
+        )
+
+@app.function_name(name="swagger_ui")
+@app.route(route="/api/docs", auth_level=func.AuthLevel.ANONYMOUS, methods=["GET"])
+def swagger_ui(req: func.HttpRequest) -> func.HttpResponse:
+    return render_swagger_ui()

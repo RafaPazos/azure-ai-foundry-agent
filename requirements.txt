@@ -6,3 +6,4 @@ azure-functions
 azure-ai-projects
 azure-identity
 aiohttp
+azure-functions-openapi
