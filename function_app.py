@@ -20,7 +20,7 @@ app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 )
 
 @app.function_name(name="agent_httptrigger")
-@app.route(route="agent_httptrigger", auth_level=func.AuthLevel.ANONYMOUS, methods=["POST"])
+@app.route(route="agent_httptrigger")
 def agent_httptrigger(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
